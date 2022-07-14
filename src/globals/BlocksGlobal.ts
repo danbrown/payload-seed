@@ -1,11 +1,11 @@
-import checkRole from "../access/checkRole";
-import Quote from "../blocks/Quote";
-import CallToAction from "../blocks/CallToAction";
-import { GlobalConfig } from "payload/types";
+import checkRole from '../access/checkRole';
+import Quote from '../blocks/Quote';
+import CallToAction from '../blocks/CallToAction';
+import { GlobalConfig } from '../../src/globals/config/types';
 
 const BlocksGlobal: GlobalConfig = {
-  slug: "blocks-global",
-  label: "Blocks Global",
+  slug: 'blocks-global',
+  label: 'Blocks Global',
   versions: {
     max: 20,
     drafts: {
@@ -13,7 +13,7 @@ const BlocksGlobal: GlobalConfig = {
     },
   },
   access: {
-    update: ({ req: { user } }) => checkRole(["admin"], user),
+    update: ({ req: { user } }) => checkRole(['admin'], user),
     read: ({ draft, req: { user } }) => {
       // To read a draft of this global, you need to be authenticated
       if (draft) {
@@ -25,15 +25,15 @@ const BlocksGlobal: GlobalConfig = {
   },
   fields: [
     {
-      name: "title",
-      type: "text",
+      name: 'title',
+      type: 'text',
       required: true,
       localized: true,
     },
     {
-      name: "blocks",
-      label: "Blocks",
-      type: "blocks",
+      name: 'blocks',
+      label: 'Blocks',
+      type: 'blocks',
       blocks: [Quote, CallToAction],
       localized: true,
     },

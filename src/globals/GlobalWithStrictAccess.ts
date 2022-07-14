@@ -1,34 +1,34 @@
-import { GlobalConfig } from "payload/types";
-import checkRole from "../access/checkRole";
+import { GlobalConfig } from '../../src/globals/config/types';
+import checkRole from '../access/checkRole';
 
 const GlobalWithAccess: GlobalConfig = {
-  slug: "global-with-access",
-  label: "Global with Strict Access",
+  slug: 'global-with-access',
+  label: 'Global with Strict Access',
   access: {
-    update: ({ req: { user } }) => checkRole(["admin"], user),
-    read: ({ req: { user } }) => checkRole(["admin"], user),
+    update: ({ req: { user } }) => checkRole(['admin'], user),
+    read: ({ req: { user } }) => checkRole(['admin'], user),
   },
   fields: [
     {
-      name: "title",
-      label: "Site Title",
-      type: "text",
+      name: 'title',
+      label: 'Site Title',
+      type: 'text',
       maxLength: 100,
       required: true,
     },
     {
-      name: "relationship",
-      label: "Test Relationship",
-      type: "relationship",
-      relationTo: "localized-posts",
+      name: 'relationship',
+      label: 'Test Relationship',
+      type: 'relationship',
+      relationTo: 'localized-posts',
       hasMany: true,
       required: true,
     },
     {
-      name: "singleRelationship",
-      label: "Test Single Relationship",
-      type: "relationship",
-      relationTo: "localized-posts",
+      name: 'singleRelationship',
+      label: 'Test Single Relationship',
+      type: 'relationship',
+      relationTo: 'localized-posts',
       required: true,
     },
   ],

@@ -1,45 +1,28 @@
-/* eslint-disable no-console */
 import express from "express";
-import path from "path";
 import payload from "payload";
+import path from "path";
 
-const expressApp = express();
 require("dotenv").config();
+const app = express();
 
-expressApp.use(
-  "/static",
-  express.static(path.resolve(__dirname, "client/static"))
-);
+// Redirect root to Admin panel
+app.get("/", (_, res) => {
+  res.redirect("/admin");
+});
 
+// add public folder to serve static files
+app.use("/public", express.static(path.resolve(__dirname, "../public")));
+
+// Initialize Payload
 payload.init({
   secret: process.env.PAYLOAD_SECRET,
   mongoURL: process.env.MONGODB_URI,
-  express: expressApp,
-  // email: {
-  //   logMockCredentials: true,
-  //   fromName: "Payload",
-  //   fromAddress: "hello@payloadcms.com",
-  // },
-  onInit: (app) => {
-    app.logger.info("Payload Demo Initialized");
+  express: app,
+  onInit: () => {
+    payload.logger.info(`Payload Admin URL: ${payload.getAdminURL()}`);
   },
 });
 
-const externalRouter = express.Router();
+// Add your own express routes here
 
-externalRouter.use(payload.authenticate);
-
-externalRouter.get("/", (req: any, res: any) => {
-  if (req.user) {
-    return res.send(`Authenticated successfully as ${req.user.email}.`);
-  }
-
-  return res.send("Not authenticated");
-});
-
-expressApp.use("/external-route", externalRouter);
-
-expressApp.listen(process.env.PORT || 3000, async () => {
-  payload.logger.info(`Admin URL on ${payload.getAdminURL()}`);
-  payload.logger.info(`API URL on ${payload.getAPIURL()}`);
-});
+app.listen(process.env.PORT || 3000);

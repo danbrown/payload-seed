@@ -1,82 +1,37 @@
-import { CollectionConfig, CollectionBeforeChangeHook } from "payload/types";
-
-const checkForUploadSizesHook: CollectionBeforeChangeHook = ({
-  req: { payloadUploadSizes },
-  data,
-}) => {
-  if (typeof payloadUploadSizes === "object") {
-    return {
-      ...data,
-      foundUploadSizes: true,
-    };
-  }
-
-  return data;
-};
+import { CollectionConfig } from "payload/types";
 
 const Media: CollectionConfig = {
   slug: "media",
-  labels: {
-    singular: "Media",
-    plural: "Media",
-  },
-  access: {
-    read: () => true,
-  },
-  admin: {
-    enableRichTextRelationship: true,
-    description: "No selfies please",
-  },
-  hooks: {
-    beforeChange: [checkForUploadSizesHook],
-  },
+  fields: [],
   upload: {
-    staticURL: "/media",
-    staticDir: "./media",
-    adminThumbnail: ({ doc }) => `/media/${doc.filename}`,
+    staticURL: "/uploads",
+    staticDir: "../public/uploads",
     imageSizes: [
       {
-        name: "maintainedAspectRatio",
-        width: 1024,
-        height: null,
-        crop: "center",
+        name: "thumbnail",
+        width: 400,
+        height: 300,
+        crop: "centre",
+      },
+      {
+        name: "card",
+        width: 768,
+        height: 1024,
+        crop: "centre",
       },
       {
         name: "tablet",
-        width: 640,
-        height: 480,
-        crop: "left top",
-      },
-      {
-        name: "mobile",
-        width: 320,
-        height: 240,
-        crop: "left top",
-      },
-      {
-        name: "icon",
-        width: 16,
-        height: 16,
+        width: 1024,
+        // By specifying `null` or leaving a height undefined,
+        // the image will be sized to a certain width,
+        // but it will retain its original aspect ratio
+        // and calculate a height automatically.
+        height: null,
+        crop: "centre",
       },
     ],
-    staticOptions: {
-      maxAge: 21600000, // 6 hours in milliseconds
-    },
+    adminThumbnail: "thumbnail",
+    mimeTypes: ["image/*"],
   },
-  fields: [
-    {
-      name: "alt",
-      label: "Alt Text",
-      type: "text",
-      required: true,
-      localized: true,
-    },
-    {
-      name: "foundUploadSizes",
-      type: "checkbox",
-    },
-  ],
-  timestamps: true,
 };
-
 export default Media;
