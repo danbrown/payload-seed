@@ -1,0 +1,7 @@
+@import "~payload/scss";
+
+.custom-minimal-route {
+  &__login-btn {
+    margin-right: base(0.5);
+  }
+}
